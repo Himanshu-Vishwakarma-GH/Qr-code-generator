@@ -1,6 +1,7 @@
 import qrcode
 import streamlit as st
 from PIL import Image 
+from io import BytesIO
 
 st.title("URL To QR Code Generator")
 
@@ -18,10 +19,14 @@ img = qr.make_image(fill_color="black", back_color="white")
 
 #st.image(img,caption="QR Code Generated Successfully")
 
-download = st.button("Download QR Code")
+# Save the image to a BytesIO object
+buffer = BytesIO()
+buffer.seek(0)
 
-if download:
-  img.save("qrcode.png")
-  st.success("QR Code downloaded successfully")
-else:
-  st.info("QR Code not downloaded")
+ # Provide a download button
+st.download_button(
+        label="Download QR Code",
+        data=buffer,
+        file_name="qrcode.png",
+        mime="image/png"
+    )
